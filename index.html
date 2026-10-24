@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drum Kit</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Arvo / Montserrat for classic serif/sans feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #283149;
+      font-family: 'Arvo', serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* Pink letter with white/3D shadow text styling */
+    .drum-letter {
+      font-family: 'Arvo', serif;
+      color: #DA0463;
+      text-shadow: 3px 3px 0px #ffffff, 5px 5px 0px rgba(0,0,0,0.15);
+    }
+
+    .title-text {
+      font-family: 'Arvo', serif;
+      color: #DBEDF3;
+      text-shadow: 3px 3px 0px #DA0463;
+    }
+
+    /* Card hover & active animations */
+    .drum-card {
+      background-color: #ffffff;
+      border: 10px solid #404B69;
+      border-radius: 28px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.08s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .drum-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.4);
+    }
+
+    .drum-card:active, .drum-card.pressed {
+      transform: scale(0.92);
+      border-color: #DA0463;
+      box-shadow: 0 2px 10px rgba(218, 4, 99, 0.6);
+    }
+
+    /* Key indicator overlay */
+    .key-badge {
+      font-family: 'Montserrat', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between py-8 px-4 text-white">
+
+  <!-- Header Section -->
+  <header class="text-center my-4">
+    <h1 class="title-text text-5xl md:text-6xl font-bold tracking-wide flex items-center justify-center gap-3">
+      Drum <span class="text-4xl md:text-5xl inline-block transform hover:rotate-12 transition-transform cursor-pointer" id="headerEmoji">🥁</span> Kit
+    </h1>
+  </header>
+
+  <!-- Drum Pad Container -->
+  <main class="w-full max-w-md my-auto flex flex-col items-center gap-5">
+    
+    <!-- 2 Column Grid for top 3 rows -->
+    <div class="grid grid-cols-2 gap-5 w-full px-2">
+      
+      <!-- Row 1: Key 'w' (Angled Red Drum Left) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="w">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Angled Red Drum (Left) -->
+          <g transform="rotate(-15 50 50)">
+            <!-- Main Drum Body -->
+            <rect x="22" y="25" width="56" height="50" rx="3" fill="#A81C38"/>
+            <rect x="22" y="25" width="56" height="50" rx="3" fill="url(#drumGradRed)"/>
+            <!-- Rims -->
+            <rect x="20" y="22" width="60" height="7" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+            <rect x="20" y="71" width="60" height="7" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+            <!-- Tension Rods & Lugs -->
+            <line x1="28" y1="29" x2="28" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="42" y1="29" x2="42" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="58" y1="29" x2="58" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="72" y1="29" x2="72" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <!-- Lugs -->
+            <rect x="26" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="40" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="56" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="70" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="26" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="40" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="56" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="70" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+          </g>
+          <defs>
+            <linearGradient id="drumGradRed" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#800D26"/>
+              <stop offset="50%" stop-color="#B91C1C"/>
+              <stop offset="100%" stop-color="#6B071E"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">w</span>
+      </button>
+
+      <!-- Row 1: Key 'a' (Angled Red Drum Right) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="a">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Angled Red Drum (Right) -->
+          <g transform="rotate(15 50 50)">
+            <!-- Main Drum Body -->
+            <rect x="22" y="25" width="56" height="50" rx="3" fill="url(#drumGradRed2)"/>
+            <!-- Rims -->
+            <rect x="20" y="22" width="60" height="7" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+            <rect x="20" y="71" width="60" height="7" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+            <!-- Tension Rods -->
+            <line x1="28" y1="29" x2="28" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="42" y1="29" x2="42" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="58" y1="29" x2="58" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <line x1="72" y1="29" x2="72" y2="71" stroke="#CBD5E1" stroke-width="2.5"/>
+            <!-- Lugs -->
+            <rect x="26" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="40" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="56" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="70" y="32" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="26" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="40" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="56" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+            <rect x="70" y="62" width="4" height="6" fill="#64748B" rx="1"/>
+          </g>
+          <defs>
+            <linearGradient id="drumGradRed2" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#6B071E"/>
+              <stop offset="50%" stop-color="#B91C1C"/>
+              <stop offset="100%" stop-color="#800D26"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">a</span>
+      </button>
+
+      <!-- Row 2: Key 's' (Deep Red Straight Drum) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="s">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Stand legs at bottom -->
+          <path d="M50 78 L30 96 M50 78 L70 96 M50 70 L50 82" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+          <!-- Straight Red Drum -->
+          <rect x="20" y="18" width="60" height="58" rx="2" fill="url(#straightDrumGrad)"/>
+          <!-- Top & Bottom Rims -->
+          <rect x="18" y="15" width="64" height="6" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+          <rect x="18" y="73" width="64" height="6" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+          <!-- Vertical Tension Rods -->
+          <line x1="26" y1="21" x2="26" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="38" y1="21" x2="38" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="50" y1="21" x2="50" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="62" y1="21" x2="62" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="74" y1="21" x2="74" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <!-- Hardware Lugs -->
+          <rect x="24" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="36" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="48" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="60" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="72" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="24" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="36" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="48" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="60" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="72" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <defs>
+            <linearGradient id="straightDrumGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#700B23"/>
+              <stop offset="30%" stop-color="#991B1B"/>
+              <stop offset="70%" stop-color="#B91C1C"/>
+              <stop offset="100%" stop-color="#58081C"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">s</span>
+      </button>
+
+      <!-- Row 2: Key 'd' (Deep Red Straight Drum) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="d">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Stand legs at bottom -->
+          <path d="M50 78 L30 96 M50 78 L70 96 M50 70 L50 82" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+          <!-- Straight Red Drum -->
+          <rect x="20" y="18" width="60" height="58" rx="2" fill="url(#straightDrumGrad2)"/>
+          <!-- Top & Bottom Rims -->
+          <rect x="18" y="15" width="64" height="6" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+          <rect x="18" y="73" width="64" height="6" rx="2" fill="#E2E8F0" stroke="#94A3B8" stroke-width="1"/>
+          <!-- Vertical Tension Rods -->
+          <line x1="26" y1="21" x2="26" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="38" y1="21" x2="38" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="50" y1="21" x2="50" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="62" y1="21" x2="62" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <line x1="74" y1="21" x2="74" y2="73" stroke="#E2E8F0" stroke-width="2"/>
+          <!-- Hardware Lugs -->
+          <rect x="24" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="36" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="48" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="60" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="72" y="23" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="24" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="36" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="48" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="60" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <rect x="72" y="66" width="4" height="5" fill="#64748B" rx="1"/>
+          <defs>
+            <linearGradient id="straightDrumGrad2" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#58081C"/>
+              <stop offset="30%" stop-color="#B91C1C"/>
+              <stop offset="70%" stop-color="#991B1B"/>
+              <stop offset="100%" stop-color="#700B23"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">d</span>
+      </button>
+
+      <!-- Row 3: Key 'j' (Grey Snare Drum on Tripod Stand) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="j">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Tripod Stand Base -->
+          <path d="M50 48 L50 82 M50 82 L22 96 M50 82 L78 96 M50 72 L32 86 M50 72 L68 86" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+          <path d="M50 48 L28 35 M50 48 L72 35" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Silver/Grey Snare Drum Body -->
+          <rect x="20" y="24" width="60" height="24" rx="2" fill="url(#snareGrad)"/>
+          <!-- Rims -->
+          <rect x="18" y="21" width="64" height="5" rx="1.5" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+          <rect x="18" y="45" width="64" height="5" rx="1.5" fill="#F1F5F9" stroke="#94A3B8" stroke-width="1"/>
+          <!-- Tension Rods -->
+          <line x1="28" y1="26" x2="28" y2="45" stroke="#CBD5E1" stroke-width="2"/>
+          <line x1="40" y1="26" x2="40" y2="45" stroke="#CBD5E1" stroke-width="2"/>
+          <line x1="52" y1="26" x2="52" y2="45" stroke="#CBD5E1" stroke-width="2"/>
+          <line x1="64" y1="26" x2="64" y2="45" stroke="#CBD5E1" stroke-width="2"/>
+          <line x1="72" y1="26" x2="72" y2="45" stroke="#CBD5E1" stroke-width="2"/>
+          <defs>
+            <linearGradient id="snareGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#64748B"/>
+              <stop offset="40%" stop-color="#CBD5E1"/>
+              <stop offset="70%" stop-color="#E2E8F0"/>
+              <stop offset="100%" stop-color="#475569"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">j</span>
+      </button>
+
+      <!-- Row 3: Key 'k' (Cymbal / Hi-Hat Stand) -->
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="k">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Stand Central Shaft -->
+          <line x1="50" y1="15" x2="50" y2="82" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+          <!-- Stand Tripod Base -->
+          <path d="M50 82 L22 96 M50 82 L78 96 M50 72 L32 86 M50 72 L68 86" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+          <!-- Center Joint Adjustment Screws -->
+          <circle cx="50" cy="48" r="3" fill="#64748B"/>
+          <circle cx="50" cy="65" r="3.5" fill="#64748B"/>
+          <line x1="45" y1="48" x2="55" y2="48" stroke="#475569" stroke-width="2"/>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">k</span>
+      </button>
+
+    </div>
+
+    <!-- Centered Bottom Row: Key 'l' (Kick Drum Head) -->
+    <div class="w-1/2 px-1">
+      <button class="drum-card aspect-square w-full flex items-center justify-center focus:outline-none" data-key="l">
+        <svg class="absolute inset-0 w-full h-full p-2" viewBox="0 0 100 100" fill="none">
+          <!-- Circular Black Bass Drum Head -->
+          <circle cx="50" cy="50" r="44" fill="#334155"/>
+          <circle cx="50" cy="50" r="44" fill="url(#kickGrad)"/>
+          <!-- Silver Outer Rim -->
+          <circle cx="50" cy="50" r="44" stroke="#CBD5E1" stroke-width="4"/>
+          <circle cx="50" cy="50" r="41" stroke="#1E293B" stroke-width="2"/>
+          <!-- Tension Screws/Lugs around rim -->
+          <circle cx="50" cy="8" r="2.5" fill="#E2E8F0"/>
+          <circle cx="50" cy="92" r="2.5" fill="#E2E8F0"/>
+          <circle cx="8" cy="50" r="2.5" fill="#E2E8F0"/>
+          <circle cx="92" cy="50" r="2.5" fill="#E2E8F0"/>
+          <circle cx="20" cy="20" r="2.5" fill="#E2E8F0"/>
+          <circle cx="80" cy="20" r="2.5" fill="#E2E8F0"/>
+          <circle cx="20" cy="80" r="2.5" fill="#E2E8F0"/>
+          <circle cx="80" cy="80" r="2.5" fill="#E2E8F0"/>
+          <defs>
+            <radialGradient id="kickGrad" cx="35%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#475569"/>
+              <stop offset="60%" stop-color="#1E293B"/>
+              <stop offset="100%" stop-color="#0F172A"/>
+            </radialGradient>
+          </defs>
+        </svg>
+        <span class="drum-letter text-6xl md:text-7xl font-bold z-10 select-none">l</span>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="mt-6 text-center text-xs md:text-sm text-slate-400 font-sans tracking-wide">
+    Press <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">W</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">A</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">S</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">D</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">J</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">K</span> <span class="bg-slate-700 text-pink-400 px-2 py-0.5 rounded font-mono font-bold">L</span> on keyboard or tap pads
+  </footer>
+
+  <!-- Audio Synthesis & Interaction Logic Script -->
+  <script>
+    // Initialize Web Audio Context dynamically on user interaction
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Helper: Create White Noise Buffer for Snares & Cymbals
+    let noiseBuffer = null;
+    function getNoiseBuffer(ctx) {
+      if (!noiseBuffer) {
+        const bufferSize = ctx.sampleRate * 2; // 2 seconds of noise
+        noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+      }
+      return noiseBuffer;
+    }
+
+    // Dynamic Sound Synthesizers for 100% reliable offline sound playback
+    const soundSynthesizers = {
+      // 'w': Tom 1 (High Pitch Tom)
+      w: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+
+        gain.gain.setValueAtTime(1.0, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.35);
+      },
+
+      // 'a': Tom 2 (Mid-High Pitch Tom)
+      a: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.exponentialRampToValueAtTime(65, now + 0.4);
+
+        gain.gain.setValueAtTime(1.0, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.4);
+      },
+
+      // 's': Tom 3 (Mid-Low Pitch Tom)
+      s: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.45);
+
+        gain.gain.setValueAtTime(1.0, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.45);
+      },
+
+      // 'd': Tom 4 (Floor Tom - Deep Low Pitch)
+      d: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.exponentialRampToValueAtTime(35, now + 0.5);
+
+        gain.gain.setValueAtTime(1.0, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.5);
+      },
+
+      // 'j': Snare Drum (Triangle Body Tone + High Pass Noise Snap)
+      j: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        // Snare Tone Body
+        const osc = ctx.createOscillator();
+        const oscGain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.15);
+        oscGain.gain.setValueAtTime(0.7, now);
+        oscGain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.connect(oscGain);
+        oscGain.connect(ctx.destination);
+
+        // Snare White Noise Snap
+        const noiseSource = ctx.createBufferSource();
+        noiseSource.buffer = getNoiseBuffer(ctx);
+        
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(1000, now);
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.8, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+
+        noiseSource.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.15);
+        noiseSource.start(now);
+        noiseSource.stop(now + 0.2);
+      },
+
+      // 'k': Cymbal / Hi-Hat (Metallic High Pass Noise Splash)
+      k: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        const noiseSource = ctx.createBufferSource();
+        noiseSource.buffer = getNoiseBuffer(ctx);
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.setValueAtTime(5000, now);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.7, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+        noiseSource.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        noiseSource.start(now);
+        noiseSource.stop(now + 0.35);
+      },
+
+      // 'l': Bass / Kick Drum (Deep Low Sub Sine Drop)
+      l: function() {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.3);
+
+        gain.gain.setValueAtTime(1.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+    };
+
+    // Play Sound & Trigger UI Press Effect
+    function playDrum(key) {
+      const lowerKey = key.toLowerCase();
+      if (soundSynthesizers[lowerKey]) {
+        soundSynthesizers[lowerKey]();
+
+        // Visual animation on matching button
+        const button = document.querySelector(`.drum-card[data-key="${lowerKey}"]`);
+        if (button) {
+          button.classList.add('pressed');
+          setTimeout(() => {
+            button.classList.remove('pressed');
+          }, 100);
+        }
+      }
+    }
+
+    // Event Listeners for Mouse/Touch Clicks
+    const drumButtons = document.querySelectorAll('.drum-card');
+    drumButtons.forEach(button => {
+      const key = button.getAttribute('data-key');
+      
+      button.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        playDrum(key);
+      });
+    });
+
+    // Keyboard Event Listener
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return; // avoid duplicate fires on holding key down
+      playDrum(e.key);
+    });
+
+    // Fun Header Emoji Click Effect
+    document.getElementById('headerEmoji').addEventListener('click', () => {
+      // Play a quick drum roll!
+      const keys = ['l', 'j', 'w', 'a', 's', 'd', 'k'];
+      keys.forEach((k, i) => {
+        setTimeout(() => playDrum(k), i * 80);
+      });
+    });
+  </script>
+</body>
+</html>
+
